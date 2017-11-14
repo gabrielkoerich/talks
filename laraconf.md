@@ -1,4 +1,5 @@
 slidenumbers: true
+build-lists: true
 
 # Workflow e Infra para aplicações Laravel
 
@@ -7,16 +8,21 @@ slidenumbers: true
 # Quem?!
 
 Gabriel Koerich
+
 26 anos
 Formado em administração
-Dev PHP há pelo menos 9 anos e Laravel há 5
+Desenvolvedor PHP há pelo menos 9 anos e Laravel há 5
 Co-fundador do Bulldesk, responsável pela área financeira e de tecnologia
 
 ---
 
 ![](image/bulldesk.com.br.png)
 
-^ Lançamos o bulldesk em março/2017, hoje estamos com 38 clientes e crescendo uns 18% ao mês
+^ O Bulldesk é um software de automação de marketing e CRM, nele é possível criar formulários, landing pages, automações de marketing, e-mail marketing e ter uma visão geral de todas as negociações com seus clientes.
+
+^ Aplicação multi tenant, com uns 600 usuários acessando por mes
+
+^ Lançamos o bulldesk em março deste ano e temos uma média de 4.000.000 de requests por mês.
 
 ---
 
@@ -33,32 +39,54 @@ Co-fundador do Bulldesk, responsável pela área financeira e de tecnologia
 # Development Workflow & Source Management
 
 - Individuals & interactions
-- Development Guidelines
+- Development Guidelines, Coding Style, PSRs
 - Local Environment
-- ~~Database dumps~~ Migrations & Seeds
-- Pull Requests / Reviews
-- Coding Style, PSRs
+- ~~Database dumps~~
+- Migrations & Seeds
 
-^ 1. Mostrar organizacao das pastas, o workflow e ferramentas para desenvolvimento local (trello, breeze / valet, docker / composer, npm), falar sobre os migrations e seeds, que devem estar definidos para qualquer dev novo entrar e não perder muito tempo configurando o projeto em sua máquina. / 
+^ Um projeto é feito por pessoas, por isso os indivíduos e suas interações são a parte mais importante de todo o desenvolvimento de software. Claro que não podemos esquecer dos processos, são eles que nos fazem continuar no caminho certo, mas as pessoas sempre vêm em primeiro lugar.
 
-^ 2. Falar como é a estrutura do repositório, variáveis de ambiente (.env), definir quais são os guidelines para desenvolvimento (como é o commit, docblocks, namespaces, PSRs, etc -> php-cs-fixer) e explicar como funciona o processo de review e aceitação de códigos.
+^ Nós vamos falar também sobre as diretrizes de desenvolvimento, como cada dev deve se portar ao desenvolver e comitar códigos novos para sua aplicação.
 
-^ Ao criar model, criar migration e factory
+^ Como configurar seu ambiente local, o modo como vão instalar o repositório e rodar todos os migrations e seeds. Nenhum dev deve receber o dump de seu banco de dados de produção. Uma dica interessante é ao criar um novo model/migration, criar também um factory e um novo seed.
+
+^ Tudo isso deve estar bem definido para qualquer dev novo entrar e não perder muito tempo configurando o projeto em sua máquina. 
+
+^ Todo 
+
+--- 
+
+# Git Flow
+
+![inline](image/gitflow.png)
 
 --- 
 
 # Github Flow
 
 - Anything in master is deployable
-- Every new branch should be created off of master and have descritive names (create-cache-mananager, improve-authentication, refactor-)
+- Every new branch should be created off of master 
+- Branches must have descriptive names (create-cache-manager, improve-auth, refactor-acl)
 - Pull requests must be reviewed by at least 2 people
+- When ready, you can merge and deploy immediately
 
+---
+
+# Github Flow
+
+![inline](image/github-flow.png)
 
 [https://guides.github.com/introduction/flow](https://guides.github.com/introduction/flow)
 
 ---
 
-![inline](image/bulldesk-guide.png)
+![inline](image/bulldesk-guidelines.png)
+
+---
+
+# Coding Style / PSRs 
+
+bleh
 
 --- 
 
@@ -67,11 +95,15 @@ Co-fundador do Bulldesk, responsável pela área financeira e de tecnologia
 ```bash
 # Install PHP/Composer/MySQL/Redis local
 
+# On MacOS
 $ composer global require laravel/valet
 
-$ cd ~/Projects
+# On Linux
+$ composer global require cpriego/valet-linux
 
-$ valet park
+$ valet install
+
+$ cd ~/Projects && valet park
 
 # All directories in ~/Projects will be acessible at http://{folder}.dev
 ```
@@ -79,6 +111,8 @@ $ valet park
 ---
 
 # Vessel (Docker)
+
+##PHP 7.1, MySQL 5.7, Redis & NodeJS with NPM, Yarn & Gulp
 
 ```bash
 # Install docker
@@ -92,10 +126,13 @@ $ php artisan vendor:publish --provider="Vessel\VesselServiceProvider"
 $ bash vessel init
 
 $ ./vessel start
+
+# Acessible at http://localhost
 ```
 
 [vessel.shippingdocker.com](vessel.shippingdocker.com)
-[serversforhackers.com](serversforhackers.com)
+
+^ Esse cara que fez o Vessel é o fideloper...
 
 ---
 
@@ -105,7 +142,7 @@ $ ./vessel start
 
 # Continuous Integration
 
-- Config (dotfiles)
+- Config (.env, dotfiles)
 - Tests
 - Code Coverage (>70%)
 - Code Quality
@@ -147,11 +184,11 @@ $ ./vessel start
 
 ---
 
-![](image/forge-load-balancer.png)
+![](image/forge-network.png)
 
 ---
 
-![](image/forge-network.png)
+![](image/forge-load-balancer.png)
 
 ---
 
@@ -159,10 +196,52 @@ $ ./vessel start
 
 ---
 
+# Load Balancer Proxy
+
+```bash
+$ composer require fideloper/proxy
+
+# Register Fideloper\Proxy\TrustedProxyServiceProvider
+
+$ php artisan vendor:publish --provider="Fideloper\Proxy\TrustedProxyServiceProvider"
+```
+
+```php
+// Http/Kernel.php
+protected $middleware = [
+    //...
+    \Fideloper\Proxy\TrustProxies::class,
+];
+
+// config/trustedproxy.php
+return [
+    'proxies' => [
+        '192.168.10.10', // Load balancer's IP address
+    ],
+//...
+```
+
+---
+
+# Nginx Proxy
+
+![inline](image/nginx-upstream-websocket.png)
+
+![inline](image/nginx-upstream-static.png)
+
+---
+
+# Nginx Proxy
+
+![inline](image/nginx.png)
+
+---
+
 ![](image/forge-recipe.png)
 
 ---
-![original](image/white.png)
+
+# Recipes
 
 ![inline](image/forge-provision-hooks.png)
 
@@ -172,14 +251,62 @@ $ ./vessel start
 
 ---
 
+![](image/forge-new-site.png)
+
+---
+
 ![](image/envoyer.png)
+
+---
+
+![inline](image/envoyer-add-server.png)
+
+---
+
+![inline](image/envoyer-ssh.png)
+
+---
+
+![inline](image/envoyer-hooks.png)
+
+---
+
+Mostrar todos os hooks
+
+---
+
+```php
+//...
+'connections' => [
+
+    'mysql' => [
+        'write' => [
+            'host' => env('DB_WRITE_HOST', env('DB_HOST', '127.0.0.1')),
+        ],
+
+        'read' => [
+            'host' => [
+                env('DB_WRITE_HOST', env('DB_HOST', '127.0.0.1')),
+                env('DB_READ_HOST', env('DB_HOST', '127.0.0.1')),
+            ],
+        ],
+
+        'backup' => [
+            'host' => env('DB_BACKUP_HOST', env('DB_READ_HOST', '127.0.0.1')),
+            'arguments' => '--single-transaction --skip-tz-utc',
+        ],
+    //...
+];
+```
+
+^ 
 
 ---
 
 # Next steps 
 
 - Measure *x*% increase on requests using [keen.io](keen.io)
-- Automatically provision new app servers using Digital Ocean API and recipes
+- Automatically provision new app servers using Forge API and recipes
 - Automatically add those servers to the load balancer
 - Drop those servers when not needed anymore
 - Drop old app servers and spin up new ones every *n*
@@ -203,11 +330,15 @@ $ ./vessel start
 
 ---
 
-Newrelic stuff
+![](image/newrelic.png)
 
 ---
 
-Digital Ocean Monitoring stuff
+# Digital Ocean Monitoring
+
+```bash
+$ curl -sSL https://agent.digitalocean.com/install.sh | sh
+```
 
 ^ Como as coisas não são tão belas assim no mundo real, o Newrelic acabou alterando a plataforma deles e cancelando o plano free antigo. O meu dura até por agora em novembro, mas felizmente, para salvar a vida de todos os pobres (brasileiros) desse mundo, o Digital Ocean lançou o seu monitoring, que é muito simples de ser instalado.
 
@@ -229,16 +360,65 @@ Avaí meu Avaí, tu já nasceste campeão
 
 ---
 
-DO Monitoring screenshot
+# Digital Ocean Monitoring
+
+![inline](image/do-monitoring-1.png)
 
 ---
 
-![](image/do-monitoring-alert.png)
+# Digital Ocean Monitoring
 
+![inline](image/do-monitoring-2.png)
 
 ---
 
-Cloudflare stuff
+# Digital Ocean Monitoring
+
+![inline](image/do-monitoring-alert.png)
+
+---
+
+![](image/cf.png)
+
+---
+
+![inline](image/cf-overview.png)
+
+---
+
+```php
+/**
+ * Set the CloudFlare conneting IP and https if applied.
+ *
+ * @param  \Illuminate\Http\Request $request
+ * @param  \Closure                 $next
+ * @return mixed
+ */
+public function handle($request, Closure $next)
+{
+    if (! app()->environment('production')) {
+        return $next($request);
+    }
+
+    if ($request->server->has('HTTP_CF_CONNECTING_IP')) {
+        if ($request->isSecure()) {
+            $request->server->set('HTTPS', true);
+        }
+
+        $request->server->set('REMOTE_ADDR', $request->server->get('HTTP_CF_CONNECTING_IP'));
+
+        return $next($request);
+    }
+
+    logf('CF: Blocked request to %s from %s', [$request->fullUrl(), $request->ip()]);
+
+    return new Response('', 404);
+}
+```
+
+---
+
+![](image/cf-page-rules.png)
 
 ---
 
@@ -289,46 +469,63 @@ function versioned($asset)
 
 ---
 
-![](image/bugsnag.png)
-
-<!--
-
-![original](image/white.png)
-
-![inline](image/bugsnag-notification.png)
--->
-
----
-
-#move this to Deployment
-
 ```php
-//...
-'connections' => [
+// LogServiceProvider.php
 
-    'mysql' => [
-        'write' => [
-            'host' => env('DB_WRITE_HOST', env('DB_HOST', '127.0.0.1')),
-        ],
+/**
+ * The papertrail log format.
+ *
+ * @var string
+ */
+protected $papertrailFormat = '%channel%.%level_name%: %message% %extra%';
 
-        'read' => [
-            'host' => [
-                env('DB_WRITE_HOST', env('DB_HOST', '127.0.0.1')),
-                env('DB_READ_HOST', env('DB_HOST', '127.0.0.1')),
-            ],
-        ],
+/**
+ * Configure the application's logging facilities.
+ *
+ * @return void
+ */
+public function boot()
+{
+    if ($this->app->environment('production', 'staging')) {
+        $syslog = new SyslogHandler('laravel');
+        $syslog->setFormatter(new LineFormatter($this->papertrailFormat));
 
-        'backup' => [
-            'host' => env('DB_BACKUP_HOST', env('DB_READ_HOST', '127.0.0.1')),
-            'arguments' => '--single-transaction --skip-tz-utc',
-        ],
-    //...
-];
+        $this->app['log']->getMonolog()->pushHandler($syslog);
+    }
+}
 ```
 
 ---
 
-![](image/envoyer.png)
+![](image/bugsnag.png)
+
+---
+
+![](image/bugsnag-errors.png)
+
+---
+
+![original](image/white.png)
+
+![inline](image/bugsnag-notification.png)
+
+---
+
+# Backups
+
+```bash
+$ composer require backup-manager/backup-manager 
+
+# OR
+$ composer require backup-manager/laravel
+
+# OR
+$ composer require spatie/laravel-backup
+```
+
+[https://docs.spatie.be/laravel-backup](https://docs.spatie.be/laravel-backup)
+
+^ Na época instalei o backup-manager e não queria ficar refém de um package laravel por causa das atualizações / precisava de umas opções a mais para o backup do innoDB. Mas hoje acho que o melhor e mais configurável é o laravel-backup
 
 ---
 
@@ -372,25 +569,6 @@ public function handle()
     }
 }
 ```
-
----
-
-# Backups
-
-```bash
-$ composer require backup-manager/backup-manager 
-
-# OR
-$ composer require backup-manager/laravel
-
-# OR
-$ composer require spatie/laravel-backup
-```
-
-[https://docs.spatie.be/laravel-backup](https://docs.spatie.be/laravel-backup)
-
-^ Na época instalei o backup-manager e não queria ficar refém de um package laravel por causa das atualizações / precisava de umas opções a mais para o backup do innoDB. Mas hoje acho que o melhor e mais configurável é o laravel-backup
-
 ---
 
 # Lições aprendidas
@@ -407,13 +585,13 @@ $ composer require spatie/laravel-backup
 
 # 3. Use micro serviços somente se puder dar manutenção à eles
 
+<!-- ---
+
+# 4. Seja cético em relação aos novos *trends* -->
+
 ---
 
-# 4. Seja cético em relação aos novos *trends*
-
----
-
-# 5. Aprenda sozinho e aproveite tudo o que a internet de dá de graça
+# 4. Estude/aprenda sozinho e aproveite tudo o que a internet te dá de graça
 
 ---
 
@@ -451,8 +629,7 @@ $ composer require spatie/laravel-backup
 ---
 
 > With great power comes great responsibility
--- Clarice Lispector
-
+-- Michel Temer
 
 ---
 
@@ -461,5 +638,8 @@ $ composer require spatie/laravel-backup
 ---
 
 # Referências
+
+[https://guides.github.com/introduction/flow](https://guides.github.com/introduction/flow)
+[https://gabrielkoerich.com/talks/infra](https://gabrielkoerich.com/talks/infra)
 
 ---
