@@ -3,16 +3,19 @@ build-lists: true
 
 # Workflow e Infra para aplicações Laravel
 
+^ Hoje vou falar sobre 
+
 ---
 
 # Quem?!
 
 Gabriel Koerich
-
-26 anos
-Formado em administração
+Administrador
 Desenvolvedor PHP há pelo menos 9 anos e Laravel há 5
-Co-fundador do Bulldesk, responsável pela área financeira e de tecnologia
+Co-fundador do Bulldesk, responsável pelo financeiro e tecnologia
+
+[gabriel@bulldesk.com.br](mailto:gabriel@bulldesk.com.br)
+[twitter.com/gabrielmkoerich](https://twitter.com/gabrielmkoerich)
 
 ---
 
@@ -32,17 +35,40 @@ Co-fundador do Bulldesk, responsável pela área financeira e de tecnologia
 
 ---
 
+![inline](image/topology-old.png)
+
+---
+
+![inline](image/topology.png)
+
+---
+
+# O que?!
+
+- Workflow
+- Infraestrutura
+- Ferramentas
+- Problemas e Soluções
+
+<!-- 
+- Dev workflow / Source Management
+- Continous Integration
+- Deploy Platforms
+- Monitoring, Security & Optimization
+ -->
+
+---
+
 # Development Workflow & <br>Source Management
 
 --- 
 
 # Development Workflow & Source Management
 
-- Individuals & interactions
-- Development Guidelines, Coding Style, PSRs
-- Local Environment
-- ~~Database dumps~~
-- Migrations & Seeds
+- Indivíduos e interações
+- Workflow, regras, padrão de código, PSRs
+- Ambiente local
+- ~~Dump do banco~~ Migrations / Seeds
 
 ^ Um projeto é feito por pessoas, por isso os indivíduos e suas interações são a parte mais importante de todo o desenvolvimento de software. Claro que não podemos esquecer dos processos, são eles que nos fazem continuar no caminho certo, mas as pessoas sempre vêm em primeiro lugar.
 
@@ -52,14 +78,6 @@ Co-fundador do Bulldesk, responsável pela área financeira e de tecnologia
 
 ^ Tudo isso deve estar bem definido para qualquer dev novo entrar e não perder muito tempo configurando o projeto em sua máquina. 
 
-^ Todo 
-
---- 
-
-# Git Flow
-
-![inline](image/gitflow.png)
-
 --- 
 
 # Github Flow
@@ -68,7 +86,7 @@ Co-fundador do Bulldesk, responsável pela área financeira e de tecnologia
 - Every new branch should be created off of master 
 - Branches must have descriptive names (create-cache-manager, improve-auth, refactor-acl)
 - Pull requests must be reviewed by at least 2 people
-- When ready, you can merge and deploy immediately
+- When ready, you should merge and deploy immediately
 
 ---
 
@@ -76,7 +94,9 @@ Co-fundador do Bulldesk, responsável pela área financeira e de tecnologia
 
 ![inline](image/github-flow.png)
 
-[https://guides.github.com/introduction/flow](https://guides.github.com/introduction/flow)
+---
+
+![](image/github-desktop.jpg)
 
 ---
 
@@ -84,9 +104,7 @@ Co-fundador do Bulldesk, responsável pela área financeira e de tecnologia
 
 ---
 
-# Coding Style / PSRs 
-
-bleh
+![inline](image/coding-style.png)
 
 --- 
 
@@ -130,8 +148,6 @@ $ ./vessel start
 # Acessible at http://localhost
 ```
 
-[vessel.shippingdocker.com](vessel.shippingdocker.com)
-
 ^ Esse cara que fez o Vessel é o fideloper...
 
 ---
@@ -143,15 +159,12 @@ $ ./vessel start
 # Continuous Integration
 
 - Config (.env, dotfiles)
-- Tests
-- Code Coverage (>70%)
-- Code Quality
+- Testes automatizados
+- Cobertura de código
+- Qualidade de código
 
 ^ Falar sobre Travis CI, Clode Climate, Scrutinizer
 ^ Explicar sobre testes automatizados, cobertura de testes, qualidade de código, integração contínua e mostrar as ferramentas que podem ser utilizadas para ver qualidade, coverage e rodar os testes.
-
----
-
 
 ---
 
@@ -159,15 +172,23 @@ $ ./vessel start
 
 ---
 
+![inline](image/travis-slack.png)
+
+---
+
+![](image/code-climate.png)
+
+---
+
 # Provision/Deploy Platforms
 
 ---
 
 # Provision/Deploy Platforms
 
-- Continuous Deployment
-- *Zero* downtime
-- Multi servers/instances
+- Deploy contínuo
+- Sem downtime
+- Multi servidores/instâncias
 - PHP 7.1
 - SSL & http2
 
@@ -196,7 +217,13 @@ $ ./vessel start
 
 ---
 
-# Load Balancer Proxy
+# Problema
+
+## Laravel não entende que o request veio do cliente e não do load balancer
+
+---
+
+# Trusted Proxy
 
 ```bash
 $ composer require fideloper/proxy
@@ -221,23 +248,58 @@ return [
 //...
 ```
 
----
+--- 
 
-# Nginx Proxy
+# Problema
 
-![inline](image/nginx-upstream-websocket.png)
-
-![inline](image/nginx-upstream-static.png)
+## Como servir arquivos estáticos de um só servidor?
 
 ---
 
 # Nginx Proxy
 
-![inline](image/nginx.png)
+```bash
+upstream static {
+    least_conn;
+    server 10.xx.xx.xx:80;
+}
+
+upstream websocket {
+    least_conn;
+    server 10.xx.xx.xx:2095;
+}
+
+^ Websocket/redis
+
+```
 
 ---
 
-![](image/forge-recipe.png)
+# Nginx Proxy
+
+```bash
+location ~* \.(css|js|png|jpg|woff|ttf)$ {
+    #return 301 $scheme://static.bulldesk.com.br$request_uri;
+    proxy_pass http://static;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection upgrade;
+    proxy_set_header Host $host;
+}
+
+location /socket.io {
+    proxy_pass http://websocket;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $host;
+    
+    proxy_connect_timeout       300;
+    proxy_send_timeout          300;
+    proxy_read_timeout          300;
+    send_timeout                300;
+}
+```
 
 ---
 
@@ -247,33 +309,28 @@ return [
 
 ---
 
-![](image/lets-encrypt.png)
+# .env 
+
+```
+REDIS_HOST=
+BEANSTALKD_HOST=
+
+DB_HOST=
+DB_WRITE_HOST=
+DB_READ_HOST=
+DB_BACKUP_HOST=
+
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+
+CACHE_DRIVER=redis
+SESSION_DRIVER=redis
+```
 
 ---
 
-![](image/forge-new-site.png)
-
----
-
-![](image/envoyer.png)
-
----
-
-![inline](image/envoyer-add-server.png)
-
----
-
-![inline](image/envoyer-ssh.png)
-
----
-
-![inline](image/envoyer-hooks.png)
-
----
-
-Mostrar todos os hooks
-
----
+# Config
 
 ```php
 //...
@@ -303,13 +360,82 @@ Mostrar todos os hooks
 
 ---
 
-# Next steps 
+# Beanstalkd queues + Supervisor
 
-- Measure *x*% increase on requests using [keen.io](keen.io)
-- Automatically provision new app servers using Forge API and recipes
-- Automatically add those servers to the load balancer
-- Drop those servers when not needed anymore
-- Drop old app servers and spin up new ones every *n*
+![inline](image/forge-workers.png)
+
+---
+
+![](image/beanstalkd-console.png)
+
+---
+
+![](image/envoyer.png)
+
+---
+
+![inline](image/envoyer-add-server.png)
+
+---
+
+![inline](image/envoyer-ssh.png)
+
+---
+
+![inline](image/envoyer-hooks.png)
+
+---
+
+![](image/envoyer-phpunit.png)
+
+---
+
+![](image/envoyer-frontend.png)
+
+---
+
+![](image/envoyer-migrations-hook.png)
+
+---
+
+![](image/envoyer-restart.png)
+
+---
+
+![](image/envoyer-bugsnag.png)
+
+---
+
+# Composer scripts
+
+```json
+"scripts": {
+    "post-install-cmd": [
+        "Illuminate\\Foundation\\ComposerScripts::postInstall",
+        "php artisan config:clear",
+        "php artisan route:clear",
+        "php artisan route:scan",
+        "php artisan route:cache",
+        "php artisan optimize"
+    ],
+    "post-update-cmd": [
+        "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+        "php artisan route:clear",
+        "php artisan config:clear",
+        "php artisan ide-helper:generate",
+        "php artisan optimize"
+    ]
+},
+```
+
+---
+
+# Próximos passos
+
+- Medir % de aumento nos requests com [keen.io](keen.io)
+- Criar novos servidores de aplicação usando a API do Forge e receitas
+- Adicionar servidores ao load-balanacer
+- Remover servidores desnecessários
 
 ---
 
@@ -320,10 +446,10 @@ Mostrar todos os hooks
 #Monitoring, Security & Optimization
 
 - CDN
-- Centralized logs & exceptions
-- Notifications
+- Monitores 
+- Logs e exceptions centralizadas
 - Backups
-- Load tests
+- Testes de carga
 
 ^ Falar sobre Cloudflare, Papertrail, Bugsnag, Newrelic, backup jobs and loader.io, beanstalkd console
 ^ Explicar que os logs devem ser centralizados no mesmo serviço, já que eles vêm de várias máquinas diferentes. Dizer que é interessante logar tudo o que acontece no app para facilitar o debug. Falar sobre o monitoramento via Newrelic, logs via Papertrail e exceptions centralizadas no Bugsgnag. Testes de carga no loader.io
@@ -422,6 +548,12 @@ public function handle($request, Closure $next)
 
 ---
 
+# Problema
+
+## Como limpar esse cache automaticamente?
+
+---
+
 ```php
 /**
  * Get the path to a versioned asset file.
@@ -459,13 +591,26 @@ function versioned($asset)
 }
 
 // Use:
-<link href="{{ versioned('build/styles/app.css') }}" rel="stylesheet">
-<script type="text/javascript" src="{{ versioned('build/scripts/app.js') }}"></script>
+<script src="{{ versioned('build/scripts/app.js') }}"></script>
+
+// Generate:
+<script src="https://static.bulldesk.com.br/build/scripts/app.js?v=fbe06e04c4f8ddd1c94c63f3a001807bace679e0"></script>
+
 ```
 
 ---
 
+# Problema 
+
+## Como centralizar os logs e exceptions?
+
+---
+
 ![](image/papertrail.png)
+
+---
+
+![](image/forge-recipe.png)
 
 ---
 
@@ -487,8 +632,10 @@ protected $papertrailFormat = '%channel%.%level_name%: %message% %extra%';
 public function boot()
 {
     if ($this->app->environment('production', 'staging')) {
-        $syslog = new SyslogHandler('laravel');
-        $syslog->setFormatter(new LineFormatter($this->papertrailFormat));
+        $syslog = new \Monolog\Handler\SyslogHandler('laravel');
+        $formatter = new \Monolog\Formatter\LineFormatter($this->papertrailFormat);
+        
+        $syslog->setFormatter($formatter);
 
         $this->app['log']->getMonolog()->pushHandler($syslog);
     }
@@ -497,7 +644,15 @@ public function boot()
 
 ---
 
+![](image/papertrail-logs.png)
+
+---
+
 ![](image/bugsnag.png)
+
+---
+
+![inline](image/bugsnag-slack.png)
 
 ---
 
@@ -522,8 +677,6 @@ $ composer require backup-manager/laravel
 # OR
 $ composer require spatie/laravel-backup
 ```
-
-[https://docs.spatie.be/laravel-backup](https://docs.spatie.be/laravel-backup)
 
 ^ Na época instalei o backup-manager e não queria ficar refém de um package laravel por causa das atualizações / precisava de umas opções a mais para o backup do innoDB. Mas hoje acho que o melhor e mais configurável é o laravel-backup
 
@@ -561,7 +714,7 @@ public function handle()
 
     $last = new Carbon('last day of this month');
 
-    // Delete file in 10 days if this not the last day in month.
+    // Delete file in 10 days if this not the last
     if ((new Carbon)->isSameAs('d/m/Y', $last)) {
         $this->info('Scheduled job to delete the backup file ' . $completePath . ' in 10 days.');
 
@@ -569,6 +722,12 @@ public function handle()
     }
 }
 ```
+
+---
+
+![](image/ottomatik.png)
+
+
 ---
 
 # Lições aprendidas
@@ -584,10 +743,6 @@ public function handle()
 ---
 
 # 3. Use micro serviços somente se puder dar manutenção à eles
-
-<!-- ---
-
-# 4. Seja cético em relação aos novos *trends* -->
 
 ---
 
@@ -615,7 +770,11 @@ public function handle()
 
 # PHP Sucks
 
-^ Pessoal, agora um assunto muito sério. Todo mundo aqui foi zoado pelo menos uma vez na vida por usar PHP. Que php é lixo, as funções não seguem nenhum padrão e que é realmente muito fácil ver código lixo em php. Mas será que o PHP é tão ruim assim? Na verdade, até a versão 5.2 era muito ruim mesmo. Nem namespace a gente tinha. Até a 5.3 a gente tinha que escrever array LITERALMENTE escrevendo array(). 
+^ Pessoal, agora um assunto sério. Todo mundo aqui foi zoado pelo menos uma vez na vida por usar PHP. Que php é lixo, as funções não seguem nenhum padrão e que é realmente muito fácil ver código lixo em php. Mas será que o PHP é tão ruim assim? Na verdade, até a versão 5.2 era muito ruim mesmo. Nem namespace a gente tinha. Até a 5.3 a gente tinha que escrever array LITERALMENTE escrevendo array(). 
+
+---
+
+![inline](image/ciro.gif)
 
 ---
 
@@ -624,12 +783,11 @@ public function handle()
 # PHP Sucks?!
 
 ^ O php começou como uma linguage de template. Foi assim que o Rasmus imaginou o PHP. A verdade é que o PHP é muito simples e deixa fazer o que você quiser. Quem tem que ser bom é você. Quem tem que usar os padrões é você. Com o laravel é a mesma coisa, ele te deixa fazer um MONTE de merda. Eu já vi código em Laravel pior que código em Wordpress.
-^ Mas sério, muita coisa mudou de lá pra cá, e a partir da versão 7 eu finalmente acho que os desenvolvedores PHP serão cada vez mais valorizados. O futuro é lindo pra gente. 
+^ Mas sério, muita coisa mudou de lá pra cá, e a partir da versão 7 eu finalmente acho que os desenvolvedores PHP serão cada vez mais respeitados/valorizados. 
 
 ---
 
 > With great power comes great responsibility
--- Michel Temer
 
 ---
 
@@ -637,9 +795,22 @@ public function handle()
 
 ---
 
-# Referências
+# Obrigado!
 
-[https://guides.github.com/introduction/flow](https://guides.github.com/introduction/flow)
-[https://gabrielkoerich.com/talks/infra](https://gabrielkoerich.com/talks/infra)
+<br>
+# Perguntas?
+
+<br>
+[bulldesk.com.br](bulldesk.com.br)
+[gabriel@bulldesk.com.br](mailto:gabriel@bulldesk.com.br)
+[twitter.com/gabrielmkoerich](https://twitter.com/gabrielmkoerich)
 
 ---
+
+# Referências
+
+[guides.github.com/introduction/flow](https://guides.github.com/introduction/flow)
+<br>[github.com/gabrielkoerich/guidelines](https://github.com/gabrielkoerich/guidelines)
+<br>[vessel.shippingdocker.com](vessel.shippingdocker.com)
+<br>[docs.spatie.be/laravel-backup](https://docs.spatie.be/laravel-backup)
+<br>[gabrielkoerich.com/talks/infra](https://gabrielkoerich.com/talks/infra)
