@@ -53,16 +53,9 @@ lbalba
 
 ---
 
-![inline](image/topology-old.png)
-
----
-
-![inline](image/topology.png)
-
----
-
 # O que?!
 
+- PHP Sucks
 - Workflow
 - Infraestrutura
 - Ferramentas
@@ -74,6 +67,65 @@ lbalba
 - Deploy Platforms
 - Monitoring, Security & Optimization
  -->
+
+---
+
+# PHP Sucks
+
+---
+
+<!-- ![](image/white.png) -->
+
+# PHP Sucks
+
+- Easy for beginners
+- Easy to "deploy"
+- PHP mixed in HTML
+- No conventions for function names
+- Wordpress
+
+^ Pessoal, agora um assunto sério. Todo mundo aqui foi zoado pelo menos uma vez na vida por usar PHP. Que php é lixo, as funções não seguem nenhum padrão e que é realmente muito fácil ver código lixo em php. Mas será que o PHP é tão ruim assim? Na verdade, até a versão 5.2 era muito ruim mesmo. Nem namespace a gente tinha. Até a 5.3 a gente tinha que escrever array LITERALMENTE escrevendo array(). 
+
+---
+
+<!-- ![](image/white.png) -->
+
+# PHP Sucks?!
+
+|Version|Changes|
+|:---:|---|
+|< 5.3 | Lixo
+|5.3   | Namespaces, closures 
+|5.4   | Traits, [] for arrays 
+|5.5   | OPCache, finally on try blocks 
+|5.6   | Argument unpacking (...$args) 
+|~~6.0~~   | - 
+|7.0   | Performance (thanks to HHVM), return and scalar types, improved exceptions
+|7.1   | Nullable types (?int), catch multiple exceptions 
+|7.2   |  
+
+^ O php começou como uma linguage de template. Foi assim que o Rasmus imaginou o PHP. A verdade é que o PHP é muito simples e deixa fazer o que você quiser. Quem tem que ser bom é você. Quem tem que usar os padrões é você. Com o laravel é a mesma coisa, ele te deixa fazer um MONTE de merda. Eu já vi código em Laravel pior que código em Wordpress.
+^ Mas sério, muita coisa mudou de lá pra cá, e a partir da versão 7 eu finalmente acho que os desenvolvedores PHP serão cada vez mais respeitados/valorizados. 
+
+---
+
+> With great power comes great responsibility
+
+--- 
+
+# Laravel Framework 
+
+- Routes & Controllers
+- Service Container & DI
+- Migrations & Eloquent ORM
+- Artisan command line
+- Queues (beanstalkd, redis, amazon sqs)
+- Broadcasting (Pusher or socket.io)
+- Laravel Mix for webpack
+
+---
+
+![](image/rails-laravel.png)
 
 ---
 
@@ -111,10 +163,6 @@ lbalba
 # Github Flow
 
 ![inline](image/github-flow.png)
-
----
-
-![](image/github-desktop.jpg)
 
 ---
 
@@ -744,6 +792,13 @@ public function handle()
 
 ![](image/ottomatik.png)
 
+---
+
+![inline](image/topology-old.png)
+
+---
+
+![inline](image/topology.png)
 
 ---
 
@@ -783,36 +838,11 @@ public function handle()
 
 ---
 
-![](image/white.png)
-
-# PHP Sucks
-
-^ Pessoal, agora um assunto sério. Todo mundo aqui foi zoado pelo menos uma vez na vida por usar PHP. Que php é lixo, as funções não seguem nenhum padrão e que é realmente muito fácil ver código lixo em php. Mas será que o PHP é tão ruim assim? Na verdade, até a versão 5.2 era muito ruim mesmo. Nem namespace a gente tinha. Até a 5.3 a gente tinha que escrever array LITERALMENTE escrevendo array(). 
-
----
-
-![inline](image/ciro.gif)
-
----
-
-![](image/white.png)
-
-# PHP Sucks?!
-
-^ O php começou como uma linguage de template. Foi assim que o Rasmus imaginou o PHP. A verdade é que o PHP é muito simples e deixa fazer o que você quiser. Quem tem que ser bom é você. Quem tem que usar os padrões é você. Com o laravel é a mesma coisa, ele te deixa fazer um MONTE de merda. Eu já vi código em Laravel pior que código em Wordpress.
-^ Mas sério, muita coisa mudou de lá pra cá, e a partir da versão 7 eu finalmente acho que os desenvolvedores PHP serão cada vez mais respeitados/valorizados. 
-
----
-
-> With great power comes great responsibility
-
----
-
-![](image/rails-laravel.png)
-
----
-
 # Obrigado!
+
+---
+
+# Estamos contratando
 
 <br>
 # Perguntas?
