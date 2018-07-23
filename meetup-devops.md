@@ -29,6 +29,14 @@ Co-fundador do Bulldesk, responsável pelo financeiro e tecnologia
 
 ---
 
+![](image/bulldesk-dashboard.png)
+
+---
+
+![](image/advbox.png)
+
+---
+
 ![original](image/white.png)
 
 ![inline](image/bulldesk-github.png)
@@ -130,7 +138,7 @@ $ cd ~/Projects && valet park
 
 # Vessel (Docker)
 
-##PHP 7.1, MySQL 5.7, Redis & NodeJS with NPM, Yarn & Gulp
+##PHP 7.2, MySQL 5.7, Redis & NodeJS with NPM, Yarn & Gulp
 
 ```bash
 # Install docker
@@ -189,7 +197,7 @@ $ ./vessel start
 - Deploy contínuo
 - Sem downtime
 - Multi servidores/instâncias
-- PHP 7.1
+- PHP 7.2
 - SSL & http2
 
 ^ Falar sobre Forge, Envoyer, Let's Encrypt
@@ -268,10 +276,9 @@ upstream websocket {
     least_conn;
     server 10.xx.xx.xx:2095;
 }
+```
 
 ^ Websocket/redis
-
-```
 
 ---
 
