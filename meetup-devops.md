@@ -19,6 +19,14 @@ Co-fundador do Bulldesk, responsável pelo financeiro e tecnologia
 
 ---
 
+# Quem?!
+
+Evaldo Felipe
+SysAdmin
+lbalba
+
+---
+
 ![](image/bulldesk.com.br.png)
 
 ^ O Bulldesk é um software de automação de marketing e CRM, nele é possível criar formulários, landing pages, automações de marketing, e-mail marketing e ter uma visão geral de todas as negociações com seus clientes.
@@ -34,6 +42,8 @@ Co-fundador do Bulldesk, responsável pelo financeiro e tecnologia
 ---
 
 ![](image/advbox.png)
+
+^ add commenmts here
 
 ---
 
