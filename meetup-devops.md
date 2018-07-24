@@ -116,19 +116,18 @@ Evaldo Felipe
 
 <!-- ![](image/white.png) -->
 
-# PHP Sucks?!
+# PHP?!
 
-|Version|Changes|
+|Version|Evolution|
 |:---:|---|
-|< 5.3 | Trash
+|< 5.3 | ☠️
 |5.3   | Namespaces, closures
 |5.4   | Traits, [] for arrays
 |5.5   | OPCache, finally on try blocks
 |5.6   | Argument unpacking (...$args)
-|~~6.0~~   | ???
+|~~6.0~~ | 👋🏻
 |7.0   | Performance (thanks to HHVM), return and scalar types, improved exceptions
 |7.1   | Nullable types (?int), catch multiple exceptions
-|7.2   |  
 
 ^ G.
 ^ A OO do PHP foi totalmente reescrita na versão 5.
@@ -141,7 +140,54 @@ Evaldo Felipe
 
 ---
 
-# Laravel Framework
+# PHP?!
+
+Composer / Packagist / Autoloader
+Dotenv
+PHP FIG and PSRs
+
+**Standards**
+PSR1 - Basic Coding
+PSR2 - Coding Style Guide
+PSR3 - Logger Interface
+PSR4 - Autoloading
+PSR5 - Caching Interface
+PSR7 - HTTP Message Interface
+
+---
+
+# Modern PHP
+
+```php
+/**
+ * Create a new instance.
+ */
+public function __construct(AutomationRepository $automations)
+{
+    $this->automations = $automations;
+}
+
+/**
+ * @Middleware("acl:automation.index,sending.index")
+ * @Get("automation", as="automation.index")
+ */
+public function index(Request $request): Response
+{
+    if ($request->expectsJson())) {
+        return $this->automations->getActive()->pluck('name', 'id');
+    }
+
+    $automations = $this->automations->categorized($request->input('categories'))
+        ->orderBy('name')
+        ->paginate(50);
+
+    return view('pages.automation.index')->with(compact('automations'));
+}
+```
+
+---
+
+# Framework's Features
 
 - Routes & Controllers
 - Service Container & DI
@@ -149,7 +195,7 @@ Evaldo Felipe
 - Artisan command line
 - Queues (beanstalkd, redis, amazon sqs)
 - Broadcasting (Pusher or socket.io)
-- Laravel Mix for webpack
+- Mix for webpack
 
 ^ G.
 
@@ -235,10 +281,6 @@ Evaldo Felipe
 
 ---
 
-# Provision/Deploy
-
----
-
 # Local Environment
 
 ---
@@ -293,20 +335,16 @@ $ ./vessel start
 
 # Production/QA Environment
 
----
 
-# Forge
-
-- Infrastructure automation as a Service
-- PHP environment as a Service
-
-^ E.
 ^ Falar sobre Forge, Envoyer, Let's Encrypt
 ^ Mostrar como funciona o provisionamento de máquinas para produção no Forge (sem xdebug, com opcache) e a integração com deploy contínuo com zero downtime no Envoyer, citando que é possível criar vários servidores em rede, cada um fazendo o seu papel para escalar a aplicação.
 
 ---
 
 ![](image/forge.png)
+
+^ Infrastructure automation as a Service
+^ PHP environment as a Service
 
 ---
 
@@ -355,8 +393,6 @@ ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:11300
 
 ---
 
-# Issue
-
 ## Laravel doesn't understand that the request came from the client and not from the load balancer
 
 
@@ -390,8 +426,6 @@ return [
 ```
 
 ---
-
-# Issue
 
 ## How to serve static files from a single server?
 
@@ -708,8 +742,6 @@ public function handle($request, Closure $next)
 
 ---
 
-# Issue
-
 ## How to clear this cache automatically?
 
 ---
@@ -774,8 +806,6 @@ function versioned($asset)
 ^ E.
 
 ---
-
-# Issue
 
 ## How to centralize logs and exceptions?
 
@@ -946,7 +976,7 @@ public function handle()
 
 ---
 
-# 4. Study/learn alone and enjoy everything the internet gives you for free.
+# 4. Study/learn and enjoy everything the internet gives you for free.
 
 ^ G.
 
@@ -991,3 +1021,4 @@ public function handle()
 <br>[vessel.shippingdocker.com](vessel.shippingdocker.com)
 <br>[docs.spatie.be/laravel-backup](https://docs.spatie.be/laravel-backup)
 <br>[gabrielkoerich.com/talks/infra](https://gabrielkoerich.com/talks/infra)
+<br>[php-fig.org](https://php-fig.org)
