@@ -83,6 +83,7 @@ Evaldo Felipe
 - Tools
 - Issues and Fixes
 
+
 ^ E.
 <!--
 - Dev workflow / Source Management
@@ -121,11 +122,11 @@ Evaldo Felipe
 
 <!-- ![](image/white.png) -->
 
-# PHP?!
+# PHP Evolution
 
 |Version|Evolution|
 |:---:|---|
-|< 5.3 | ☠️
+|< 5.3 | 💩
 |5.3   | Namespaces, closures
 |5.4   | Traits, [] for arrays
 |5.5   | OPCache, finally on try blocks
@@ -146,9 +147,10 @@ Evaldo Felipe
 
 ---
 
-# PHP?!
+# Community Evolution
 
 Autoloaders, Composer & Packagist
+Frameworks (Zend, Symfony, Laravel)
 PHP FIG and PSRs
 
 **Standards**
@@ -189,12 +191,14 @@ public function index(Request $request): Response
 }
 ```
 
+^ G.
+
 ---
 
-# Frameworks Features
+# Laravel Features
 
 - Routes & Controllers
-- Service Container & DI
+- Service Container & Dependency Injection
 - Migrations & Eloquent ORM
 - Artisan command line
 - Queues (beanstalkd, redis, amazon sqs)
@@ -202,6 +206,7 @@ public function index(Request $request): Response
 - Mix for webpack
 
 ^ G.
+^ Falar que usamos laravel e estas são as features
 
 ---
 
@@ -246,11 +251,65 @@ public function index(Request $request): Response
 
 ---
 
+# Bulldesk Guidelines
+
 ![inline](image/bulldesk-guidelines.png)
 
 ---
 
 ![inline](image/coding-style.png)
+
+---
+
+# Local Environment
+
+---
+
+# Laravel Valet
+
+```bash
+# Install PHP/Composer/MySQL/Redis local
+
+# On MacOS
+$ composer global require laravel/valet
+
+# On Linux
+$ composer global require cpriego/valet-linux
+
+$ valet install
+
+$ cd ~/Projects && valet park
+
+# All directories in ~/Projects will be acessible at http://{folder}.dev
+```
+
+^ E.
+^ Falar da evolução do ambiente local
+
+---
+
+# Vessel (Docker)
+
+##PHP 7.2, MySQL 5.7, Redis & NodeJS with NPM, Yarn & Gulp
+
+```bash
+# Install docker
+
+$ composer require shipping-docker/vessel
+
+# Register Vessel\VesselServiceProvide if not on Laravel 5.5
+
+$ php artisan vendor:publish --provider="Vessel\VesselServiceProvider"
+
+$ bash vessel init
+
+$ ./vessel start
+
+# Acessible at http://localhost
+```
+
+^ G.
+^ Esse cara que fez o Vessel é o fideloper...
 
 ---
 
@@ -308,58 +367,6 @@ SESSION_DRIVER=redis
 
 ---
 
-# Local Environment
-
----
-
-# Laravel Valet
-
-```bash
-# Install PHP/Composer/MySQL/Redis local
-
-# On MacOS
-$ composer global require laravel/valet
-
-# On Linux
-$ composer global require cpriego/valet-linux
-
-$ valet install
-
-$ cd ~/Projects && valet park
-
-# All directories in ~/Projects will be acessible at http://{folder}.dev
-```
-
-^ E.
-^ Falar da evolução do ambiente local
-
----
-
-# Vessel (Docker)
-
-##PHP 7.2, MySQL 5.7, Redis & NodeJS with NPM, Yarn & Gulp
-
-```bash
-# Install docker
-
-$ composer require shipping-docker/vessel
-
-# Register Vessel\VesselServiceProvide if not on Laravel 5.5
-
-$ php artisan vendor:publish --provider="Vessel\VesselServiceProvider"
-
-$ bash vessel init
-
-$ ./vessel start
-
-# Acessible at http://localhost
-```
-
-^ G.
-^ Esse cara que fez o Vessel é o fideloper...
-
----
-
 # Production/QA Environment
 
 
@@ -368,9 +375,21 @@ $ ./vessel start
 
 ---
 
+# Provision/Deploy
+
+- Continuous Deploy
+- Zero downtime
+- Multi Servers / Instances
+- Database Replication
+- PHP 7.2
+- SSL & http2
+
+---
+
 ![](image/forge.png)
 
-^ Infrastructure automation as a Service
+^ E 
+Infrastructure automation as a Service
 ^ PHP environment as a Service
 
 ---
@@ -548,16 +567,6 @@ location /socket.io {
 ![inline](image/forge-workers.png)
 
 ^ G.
-
----
-
-# Provision/Deploy
-
-- Continuous Deploy
-- Zero downtime
-- Multi Servers / Instances
-- PHP 7.2
-- SSL & http2
 
 ---
 
@@ -925,13 +934,13 @@ public function handle()
 
 ---
 
-![](image/ottomatik.png)
-
----
+# Before
 
 ![inline](image/topology-old.png)
 
 ---
+
+# Than
 
 ![inline](image/topology.png)
 
