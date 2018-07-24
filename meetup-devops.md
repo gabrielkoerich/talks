@@ -13,12 +13,12 @@ build-lists: true
 # Who?!
 
 Gabriel Koerich
-Administrator
-PHP Developer over 9 years and 5 years as Laravel
-Co-founder of Bulldesk, responsible for finance and technology
+Over 10 years of experience in PHP and 5 in Laravel
+Founder of Bulldesk, responsible for finance and technology
 
 [gabriel@bulldesk.com.br](mailto:gabriel@bulldesk.com.br)
 [twitter.com/gabrielmkoerich](https://twitter.com/gabrielmkoerich)
+[github.com/gabrielkoerich](https://github.com/gabrielkoerich)
 
 ---
 
@@ -131,6 +131,7 @@ Evaldo Felipe
 |7.2   |  
 
 ^ G.
+^ A OO do PHP foi totalmente reescrita na versão 5.
 ^ O php começou como uma linguage de template. Foi assim que o Rasmus imaginou o PHP. A verdade é que o PHP é muito simples e deixa fazer o que você quiser. Quem tem que ser bom é você. Quem tem que usar os padrões é você. Com o laravel é a mesma coisa, ele te deixa fazer um MONTE de merda. Eu já vi código em Laravel pior que código em Wordpress.
 ^ Mas sério, muita coisa mudou de lá pra cá, e a partir da versão 7 eu finalmente acho que os desenvolvedores PHP serão cada vez mais respeitados/valorizados.
 
@@ -154,20 +155,16 @@ Evaldo Felipe
 
 ---
 
-![](image/rails-laravel.png)
-
----
-
 # Development Workflow & <br>Source Management
 
 ---
 
 # Development Workflow & Source Management
 
-- Individual and interactions
-- Workflow, rules, code patterns, PSRs
+- Workflow
+- Rules, code patterns, PSRs
 - Local environment
-- ~~Dump database~~ Migrations / Seeds
+- ~~Database dump~~ Migrations / Seeds
 
 ^ G.
 
@@ -242,7 +239,7 @@ Evaldo Felipe
 
 ---
 
-# Environment Local
+# Local Environment
 
 ---
 
@@ -331,6 +328,8 @@ $ ./vessel start
 
 ---
 
+# Firewall Rules
+
 ```bash
 ACCEPT     tcp  --  10.132.103.204       anywhere             tcp dpt:mysql
 ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:mysql
@@ -398,35 +397,38 @@ return [
 
 ---
 
-# Nginx Proxy
+# Nginx Static Proxy
 
 ```bash
 upstream static {
     least_conn;
-    server 10.xx.xx.xx:80;
-}
-
-upstream websocket {
-    least_conn;
-    server 10.xx.xx.xx:2095;
+    server 10.xx.xx.xx:80; #static server ip
 }
 ```
 
-^ G.
-^ Websocket/redis
-
----
-
-# Nginx Proxy
-
 ```bash
+#...
 location ~* \.(css|js|png|jpg|woff|ttf)$ {
-    #return 301 $scheme://static.bulldesk.com.br$request_uri;
     proxy_pass http://static;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection upgrade;
     proxy_set_header Host $host;
+}
+```
+
+^ G.
+^ Falar sobre Websocket node e redis
+
+---
+
+# Nginx Websocket Proxy
+
+```bash
+
+upstream websocket {
+    least_conn;
+    server 10.xx.xx.xx:2095; #websocket server ip
 }
 
 location /socket.io {
@@ -468,7 +470,7 @@ SESSION_DRIVER=redis
 
 ---
 
-# Config
+# MySQL Master/Slave 
 
 ```php
 //...
