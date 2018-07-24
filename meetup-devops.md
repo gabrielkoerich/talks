@@ -114,6 +114,11 @@ Evaldo Felipe
 
 ---
 
+> I don't know how to stop it, there was never any intent to write a programming language
+-- Rasmus Lerdorf 
+
+---
+
 <!-- ![](image/white.png) -->
 
 # PHP?!
@@ -131,12 +136,13 @@ Evaldo Felipe
 
 ^ G.
 ^ A OO do PHP foi totalmente reescrita na versão 5.
-^ O php começou como uma linguage de template. Foi assim que o Rasmus imaginou o PHP. A verdade é que o PHP é muito simples e deixa fazer o que você quiser. Quem tem que ser bom é você. Quem tem que usar os padrões é você. Com o laravel é a mesma coisa, ele te deixa fazer um MONTE de merda. Eu já vi código em Laravel pior que código em Wordpress.
+^ A verdade é que o PHP é muito simples e deixa fazer o que você quiser. Quem tem que ser bom é você. Quem tem que usar os padrões é você. Com o laravel é a mesma coisa, ele te deixa fazer um MONTE de merda. Eu já vi código em Laravel pior que código em Wordpress.
 ^ Mas sério, muita coisa mudou de lá pra cá, e a partir da versão 7 eu finalmente acho que os desenvolvedores PHP serão cada vez mais respeitados/valorizados.
 
 ---
 
-> With great power comes great responsibility
+> I have absolutely no idea how to write a programming language, I just kept adding the next logical step on the way.
+-- Rasmus Lerdorf 
 
 ---
 
@@ -187,7 +193,7 @@ public function index(Request $request): Response
 
 ---
 
-# Framework's Features
+# Frameworks Features
 
 - Routes & Controllers
 - Service Container & DI
