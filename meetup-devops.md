@@ -13,7 +13,7 @@ build-lists: true
 # Who?!
 
 Gabriel Koerich
-Over 10 years of experience in PHP and 5 in Laravel
+Over 10 years of experience in PHP and 6 in Laravel
 Founder of Bulldesk, responsible for finance and technology
 
 [gabriel@bulldesk.com.br](mailto:gabriel@bulldesk.com.br)
@@ -380,8 +380,6 @@ ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:6379
 ACCEPT     tcp  --  10.132.103.204       anywhere             tcp dpt:11300
 ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:11300
 ```
-
-
 
 ---
 
