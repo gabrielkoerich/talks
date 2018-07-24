@@ -422,7 +422,7 @@ ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:11300
 
 ## Issue #1
 
-## Laravel doesn't understand that the request came from the client and not from the load balancer
+## Laravel doesn't understand that the request came from a client and not from the load balancer
 
 
 ^ G.
@@ -515,7 +515,7 @@ location /socket.io {
 
 ---
 
-# MySQL Master/Slave Config
+# Master/Slave Config
 
 ```php
 //...
