@@ -153,12 +153,12 @@ Dotenv
 PHP FIG and PSRs
 
 **Standards**
-PSR1 - Basic Coding
-PSR2 - Coding Style Guide
-PSR3 - Logger Interface
-PSR4 - Autoloading
-PSR5 - Caching Interface
-PSR7 - HTTP Message Interface
+PSR-1: Basic Coding
+PSR-2: Coding Style Guide
+PSR-3: Logger Interface
+PSR-4: Autoloader
+PSR-5: Caching Interface
+PSR-7: HTTP Message Interface
 
 ---
 
