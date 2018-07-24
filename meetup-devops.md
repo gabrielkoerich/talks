@@ -1,33 +1,42 @@
 slidenumbers: true
 build-lists: true
 
-# Workflow e Infra para aplicações Laravel
+# DevOps in PHP environment
 
-^ Hoje vou falar sobre 
+^ Hoje vamos falar sobre:
+^ Ambientes semelhantes de 2 empresas diferentes
+^ Maneiras diferentes de resolver o mesmo Problema
+
 
 ---
 
-# Quem?!
+# Who?!
 
 Gabriel Koerich
-Administrador
-Desenvolvedor PHP há pelo menos 9 anos e Laravel há 5
-Co-fundador do Bulldesk, responsável pelo financeiro e tecnologia
+Administrator
+PHP Developer over 9 years and 5 years as Laravel
+Co-founder of Bulldesk, responsible for finance and technology
 
 [gabriel@bulldesk.com.br](mailto:gabriel@bulldesk.com.br)
 [twitter.com/gabrielmkoerich](https://twitter.com/gabrielmkoerich)
 
 ---
 
-# Quem?!
+# Who?!
 
 Evaldo Felipe
-SysAdmin
-lbalba
+8 years of SysAdmin
+2,5 years of DevOps
+
+[contato@evaldofelipe.com](mailto:contato@evaldofelipe.com)
+[twitter.com/evaldofelipe](https://twitter.com/evaldofelipe)
+
 
 ---
 
 ![](image/bulldesk.com.br.png)
+
+^ G.
 
 ^ O Bulldesk é um software de automação de marketing e CRM, nele é possível criar formulários, landing pages, automações de marketing, e-mail marketing e ter uma visão geral de todas as negociações com seus clientes.
 
@@ -41,27 +50,41 @@ lbalba
 
 ---
 
-![](image/advbox.png)
-
-^ add commenmts here
-
----
-
 ![original](image/white.png)
 
 ![inline](image/bulldesk-github.png)
 
 ---
 
-# O que?!
+![](image/advbox.png)
 
-- PHP Sucks
+^ E.
+
+^ Aplicação voltada para o meio juridico, para gestão de processos, organização de tarefas do time, gestão do escritório, atualização automatizada dos processos em atividade (explicar alguns detalhes)
+
+^ Versão free e versão premium com xxx usuários, com 2.400.000 de requests/semana
+
+---
+
+![](image/advbox-dashboard.png)
+
+---
+
+![original](image/white.png)
+
+![inline](image/advbox-github.png)
+
+---
+# Agenda
+
+- PHP Sucks?!
 - Workflow
-- Infraestrutura
-- Ferramentas
-- Problemas e Soluções
+- Infrastructure
+- Tools
+- Issues and Fixes
 
-<!-- 
+^ E.
+<!--
 - Dev workflow / Source Management
 - Continous Integration
 - Deploy Platforms
@@ -70,13 +93,15 @@ lbalba
 
 ---
 
-# PHP Sucks
+# PHP Sucks?!
+
+^ G.
 
 ---
 
 <!-- ![](image/white.png) -->
 
-# PHP Sucks
+# PHP Sucks?!
 
 - Easy for beginners
 - Easy to "deploy"
@@ -84,7 +109,8 @@ lbalba
 - No conventions for function names
 - Wordpress
 
-^ Pessoal, agora um assunto sério. Todo mundo aqui foi zoado pelo menos uma vez na vida por usar PHP. Que php é lixo, as funções não seguem nenhum padrão e que é realmente muito fácil ver código lixo em php. Mas será que o PHP é tão ruim assim? Na verdade, até a versão 5.2 era muito ruim mesmo. Nem namespace a gente tinha. Até a 5.3 a gente tinha que escrever array LITERALMENTE escrevendo array(). 
+^ G.
+^ Pessoal, agora um assunto sério. Todo mundo aqui foi zoado pelo menos uma vez na vida por usar PHP. Que php é lixo, as funções não seguem nenhum padrão e que é realmente muito fácil ver código lixo em php. Mas será que o PHP é tão ruim assim? Na verdade, até a versão 5.2 era muito ruim mesmo. Nem namespace a gente tinha. Até a 5.3 a gente tinha que escrever array LITERALMENTE escrevendo array().
 
 ---
 
@@ -94,26 +120,27 @@ lbalba
 
 |Version|Changes|
 |:---:|---|
-|< 5.3 | Lixo
-|5.3   | Namespaces, closures 
-|5.4   | Traits, [] for arrays 
-|5.5   | OPCache, finally on try blocks 
-|5.6   | Argument unpacking (...$args) 
-|~~6.0~~   | - 
+|< 5.3 | Trash
+|5.3   | Namespaces, closures
+|5.4   | Traits, [] for arrays
+|5.5   | OPCache, finally on try blocks
+|5.6   | Argument unpacking (...$args)
+|~~6.0~~   | ???
 |7.0   | Performance (thanks to HHVM), return and scalar types, improved exceptions
-|7.1   | Nullable types (?int), catch multiple exceptions 
+|7.1   | Nullable types (?int), catch multiple exceptions
 |7.2   |  
 
+^ G.
 ^ O php começou como uma linguage de template. Foi assim que o Rasmus imaginou o PHP. A verdade é que o PHP é muito simples e deixa fazer o que você quiser. Quem tem que ser bom é você. Quem tem que usar os padrões é você. Com o laravel é a mesma coisa, ele te deixa fazer um MONTE de merda. Eu já vi código em Laravel pior que código em Wordpress.
-^ Mas sério, muita coisa mudou de lá pra cá, e a partir da versão 7 eu finalmente acho que os desenvolvedores PHP serão cada vez mais respeitados/valorizados. 
+^ Mas sério, muita coisa mudou de lá pra cá, e a partir da versão 7 eu finalmente acho que os desenvolvedores PHP serão cada vez mais respeitados/valorizados.
 
 ---
 
 > With great power comes great responsibility
 
---- 
+---
 
-# Laravel Framework 
+# Laravel Framework
 
 - Routes & Controllers
 - Service Container & DI
@@ -123,6 +150,8 @@ lbalba
 - Broadcasting (Pusher or socket.io)
 - Laravel Mix for webpack
 
+^ G.
+
 ---
 
 ![](image/rails-laravel.png)
@@ -131,14 +160,16 @@ lbalba
 
 # Development Workflow & <br>Source Management
 
---- 
+---
 
 # Development Workflow & Source Management
 
-- Indivíduos e interações
-- Workflow, regras, padrão de código, PSRs
-- Ambiente local
-- ~~Dump do banco~~ Migrations / Seeds
+- Individual and interactions
+- Workflow, rules, code patterns, PSRs
+- Local environment
+- ~~Dump database~~ Migrations / Seeds
+
+^ G.
 
 ^ Um projeto é feito por pessoas, por isso os indivíduos e suas interações são a parte mais importante de todo o desenvolvimento de software. Claro que não podemos esquecer dos processos, são eles que nos fazem continuar no caminho certo, mas as pessoas sempre vêm em primeiro lugar.
 
@@ -146,17 +177,19 @@ lbalba
 
 ^ Como configurar seu ambiente local, o modo como vão instalar o repositório e rodar todos os migrations e seeds. Nenhum dev deve receber o dump de seu banco de dados de produção. Uma dica interessante é ao criar um novo model/migration, criar também um factory e um novo seed.
 
-^ Tudo isso deve estar bem definido para qualquer dev novo entrar e não perder muito tempo configurando o projeto em sua máquina. 
+^ Tudo isso deve estar bem definido para qualquer dev novo entrar e não perder muito tempo configurando o projeto em sua máquina.
 
---- 
+---
 
 # Github Flow
 
 - Anything in master is deployable
-- Every new branch should be created off of master 
+- Every new branch should be created off of master
 - Branches must have descriptive names (create-cache-manager, improve-auth, refactor-acl)
 - Pull requests must be reviewed by at least 2 people
 - When ready, you should merge and deploy immediately
+
+^ E.
 
 ---
 
@@ -172,7 +205,7 @@ lbalba
 
 ![inline](image/coding-style.png)
 
---- 
+---
 
 # Laravel Valet
 
@@ -191,6 +224,8 @@ $ cd ~/Projects && valet park
 
 # All directories in ~/Projects will be acessible at http://{folder}.dev
 ```
+
+^ E.
 
 ---
 
@@ -214,21 +249,25 @@ $ ./vessel start
 # Acessible at http://localhost
 ```
 
+^ G.
 ^ Esse cara que fez o Vessel é o fideloper...
 
 ---
 
 # Continuous Integration
 
+^ G.
+
 ---
 
 # Continuous Integration
 
 - Config (.env, dotfiles)
-- Testes automatizados
-- Cobertura de código
-- Qualidade de código
+- Automated Testing
+- Code coverage
+- Code quality
 
+^ G.
 ^ Falar sobre Travis CI, Clode Climate, Scrutinizer
 ^ Explicar sobre testes automatizados, cobertura de testes, qualidade de código, integração contínua e mostrar as ferramentas que podem ser utilizadas para ver qualidade, coverage e rodar os testes.
 
@@ -252,12 +291,13 @@ $ ./vessel start
 
 # Provision/Deploy Platforms
 
-- Deploy contínuo
-- Sem downtime
-- Multi servidores/instâncias
+- Continuous Deploy
+- no downtime
+- Multi Servers / Instances
 - PHP 7.2
 - SSL & http2
 
+^ E.
 ^ Falar sobre Forge, Envoyer, Let's Encrypt
 ^ Mostrar como funciona o provisionamento de máquinas para produção no Forge (sem xdebug, com opcache) e a integração com deploy contínuo com zero downtime no Envoyer, citando que é possível criar vários servidores em rede, cada um fazendo o seu papel para escalar a aplicação.
 
@@ -275,6 +315,23 @@ $ ./vessel start
 
 ---
 
+```bash
+ACCEPT     tcp  --  10.132.103.204       anywhere             tcp dpt:mysql
+ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:mysql
+ACCEPT     tcp  --  10.132.103.204       anywhere             tcp dpt:postgresql
+ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:postgresql
+ACCEPT     tcp  --  10.132.103.204       anywhere             tcp dpt:11211
+ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:11211
+ACCEPT     tcp  --  10.132.103.204       anywhere             tcp dpt:6379
+ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:6379
+ACCEPT     tcp  --  10.132.103.204       anywhere             tcp dpt:11300
+ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:11300
+```
+
+
+
+---
+
 ![](image/forge-load-balancer.png)
 
 ---
@@ -283,9 +340,12 @@ $ ./vessel start
 
 ---
 
-# Problema
+# Issue
 
-## Laravel não entende que o request veio do cliente e não do load balancer
+## Laravel doesn't understand that the request came from the client and not from the load balancer
+
+
+^ G.
 
 ---
 
@@ -314,11 +374,11 @@ return [
 //...
 ```
 
---- 
+---
 
-# Problema
+# Issue
 
-## Como servir arquivos estáticos de um só servidor?
+## How to serve static files from a single server?
 
 ---
 
@@ -336,6 +396,7 @@ upstream websocket {
 }
 ```
 
+^ G.
 ^ Websocket/redis
 
 ---
@@ -358,7 +419,7 @@ location /socket.io {
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
     proxy_set_header Host $host;
-    
+
     proxy_connect_timeout       300;
     proxy_send_timeout          300;
     proxy_read_timeout          300;
@@ -374,7 +435,7 @@ location /socket.io {
 
 ---
 
-# .env 
+# .env
 
 ```
 REDIS_HOST=
@@ -392,6 +453,8 @@ DB_PASSWORD=
 CACHE_DRIVER=redis
 SESSION_DRIVER=redis
 ```
+
+^ E.
 
 ---
 
@@ -421,13 +484,15 @@ SESSION_DRIVER=redis
 ];
 ```
 
-^ 
+^
 
 ---
 
 # Beanstalkd queues + Supervisor
 
 ![inline](image/forge-workers.png)
+
+^ G.
 
 ---
 
@@ -448,6 +513,10 @@ SESSION_DRIVER=redis
 ---
 
 ![inline](image/envoyer-hooks.png)
+
+---
+
+![inline](image/envoyer-server-trick.png)
 
 ---
 
@@ -495,15 +564,6 @@ SESSION_DRIVER=redis
 
 ---
 
-# Próximos passos
-
-- Medir % de aumento nos requests com [keen.io](keen.io)
-- Criar novos servidores de aplicação usando a API do Forge e receitas
-- Adicionar servidores ao load-balanacer
-- Remover servidores desnecessários
-
----
-
 #Monitoring & Security
 
 ---
@@ -511,10 +571,10 @@ SESSION_DRIVER=redis
 #Monitoring, Security & Optimization
 
 - CDN
-- Monitores 
-- Logs e exceptions centralizadas
+- Monitors
+- Logs e exceptions centralized
 - Backups
-- Testes de carga
+- Load tests
 
 ^ Falar sobre Cloudflare, Papertrail, Bugsnag, Newrelic, backup jobs and loader.io, beanstalkd console
 ^ Explicar que os logs devem ser centralizados no mesmo serviço, já que eles vêm de várias máquinas diferentes. Dizer que é interessante logar tudo o que acontece no app para facilitar o debug. Falar sobre o monitoramento via Newrelic, logs via Papertrail e exceptions centralizadas no Bugsgnag. Testes de carga no loader.io
@@ -522,6 +582,18 @@ SESSION_DRIVER=redis
 ---
 
 ![](image/newrelic.png)
+
+^ G.
+
+---
+
+![inline](image/datadog.png)
+
+^ E.
+
+---
+
+![inline](image/datadog-notification.png)
 
 ---
 
@@ -531,6 +603,7 @@ SESSION_DRIVER=redis
 $ curl -sSL https://agent.digitalocean.com/install.sh | sh
 ```
 
+^ G.
 ^ Como as coisas não são tão belas assim no mundo real, o Newrelic acabou alterando a plataforma deles e cancelando o plano free antigo. O meu dura até por agora em novembro, mas felizmente, para salvar a vida de todos os pobres (brasileiros) desse mundo, o Digital Ocean lançou o seu monitoring, que é muito simples de ser instalado.
 
 ^ mostrar o script install
@@ -613,9 +686,9 @@ public function handle($request, Closure $next)
 
 ---
 
-# Problema
+# Issue
 
-## Como limpar esse cache automaticamente?
+## How to clear this cache automatically?
 
 ---
 
@@ -663,11 +736,28 @@ function versioned($asset)
 
 ```
 
+^ G.
+^ E. Eu utilizo dentro do deploy do envoyer via API com token
+
 ---
 
-# Problema 
+![inline](image/lets-monitor.png)
 
-## Como centralizar os logs e exceptions?
+^ E.
+
+---
+
+![](image/loader-io.png)
+
+^ E.
+
+---
+
+# Issue
+
+## How to centralize logs and exceptions?
+
+^ G.
 
 ---
 
@@ -699,7 +789,7 @@ public function boot()
     if ($this->app->environment('production', 'staging')) {
         $syslog = new \Monolog\Handler\SyslogHandler('laravel');
         $formatter = new \Monolog\Formatter\LineFormatter($this->papertrailFormat);
-        
+
         $syslog->setFormatter($formatter);
 
         $this->app['log']->getMonolog()->pushHandler($syslog);
@@ -711,13 +801,19 @@ public function boot()
 
 ![](image/papertrail-logs.png)
 
+^ G.
+
 ---
 
 ![](image/bugsnag.png)
 
+^ G.
+
 ---
 
 ![inline](image/bugsnag-slack.png)
+
+^ G.
 
 ---
 
@@ -729,12 +825,14 @@ public function boot()
 
 ![inline](image/bugsnag-notification.png)
 
+^ G.
+
 ---
 
 # Backups
 
 ```bash
-$ composer require backup-manager/backup-manager 
+$ composer require backup-manager/backup-manager
 
 # OR
 $ composer require backup-manager/laravel
@@ -743,7 +841,9 @@ $ composer require backup-manager/laravel
 $ composer require spatie/laravel-backup
 ```
 
+^ G.
 ^ Na época instalei o backup-manager e não queria ficar refém de um package laravel por causa das atualizações / precisava de umas opções a mais para o backup do innoDB. Mas hoje acho que o melhor e mais configurável é o laravel-backup
+^ E. uso bash.sh coloco senha no arquivo e mando pro S3
 
 ---
 
@@ -802,23 +902,31 @@ public function handle()
 
 ---
 
-# Lições aprendidas
+# Lessons Learned
 
 ---
 
-# 1. Não otimize ou escale prematuramente, mas esteja preparado pra isso
+# 1. Don't optimize or escalate prematurely, but be prepared for this.
+
+^ E.
 
 ---
 
-# 2. Não crie abstrações desnecessárias
+# 2. Don't create unnecessary abstractions.
+
+^ G.
 
 ---
 
-# 3. Use micro serviços somente se puder dar manutenção à eles
+# 3. Use microservices only if you can maintain them.
+
+^ E.
 
 ---
 
-# 4. Estude/aprenda sozinho e aproveite tudo o que a internet te dá de graça
+# 4. Study/learn alone and enjoy everything the internet gives you for free.
+
+^ G.
 
 ---
 
@@ -828,7 +936,7 @@ public function handle()
 
 ![original](image/white.png)
 
-![inline](image/logo-github.png) ![inline](image/logo-datadog.png) 
+![inline](image/logo-github.png) ![inline](image/logo-datadog.png)
 
 ![inline](image/logo-digitalocean.png) ![inline](image/logo-gitkraken.png)
 
@@ -838,14 +946,14 @@ public function handle()
 
 ---
 
-# Obrigado!
+# Thanks!
 
 ---
 
-# Estamos contratando
+# We are hiring!
 
 <br>
-# Perguntas?
+# Questions?
 
 <br>
 [bulldesk.com.br](bulldesk.com.br)
@@ -854,7 +962,7 @@ public function handle()
 
 ---
 
-# Referências
+# Ref
 
 [guides.github.com/introduction/flow](https://guides.github.com/introduction/flow)
 <br>[github.com/gabrielkoerich/guidelines](https://github.com/gabrielkoerich/guidelines)
