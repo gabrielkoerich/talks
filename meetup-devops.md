@@ -275,6 +275,29 @@ public function index(Request $request): Response
 
 ---
 
+# .env
+
+```
+REDIS_HOST=
+BEANSTALKD_HOST=
+
+DB_HOST=
+DB_WRITE_HOST=
+DB_READ_HOST=
+DB_BACKUP_HOST=
+
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+
+CACHE_DRIVER=redis
+SESSION_DRIVER=redis
+```
+
+^ E.
+
+---
+
 ![](image/travis-build.png)
 
 ---
@@ -397,6 +420,8 @@ ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:11300
 
 ---
 
+## Issue #1
+
 ## Laravel doesn't understand that the request came from the client and not from the load balancer
 
 
@@ -430,6 +455,8 @@ return [
 ```
 
 ---
+
+## Issue #2
 
 ## How to serve static files from a single server?
 
@@ -482,33 +509,13 @@ location /socket.io {
     send_timeout                300;
 }
 ```
+---
+
+# MySQL Replication
 
 ---
 
-# .env
-
-```
-REDIS_HOST=
-BEANSTALKD_HOST=
-
-DB_HOST=
-DB_WRITE_HOST=
-DB_READ_HOST=
-DB_BACKUP_HOST=
-
-DB_NAME=
-DB_USER=
-DB_PASSWORD=
-
-CACHE_DRIVER=redis
-SESSION_DRIVER=redis
-```
-
-^ E.
-
----
-
-# MySQL Master/Slave 
+# MySQL Master/Slave Config
 
 ```php
 //...
@@ -543,6 +550,16 @@ SESSION_DRIVER=redis
 ![inline](image/forge-workers.png)
 
 ^ G.
+
+---
+
+# Provision/Deploy
+
+- Continuous Deploy
+- Zero downtime
+- Multi Servers / Instances
+- PHP 7.2
+- SSL & http2
 
 ---
 
@@ -590,40 +607,6 @@ SESSION_DRIVER=redis
 
 ---
 
-# Composer scripts
-
-```json
-"scripts": {
-    "post-install-cmd": [
-        "Illuminate\\Foundation\\ComposerScripts::postInstall",
-        "php artisan config:clear",
-        "php artisan route:clear",
-        "php artisan route:scan",
-        "php artisan route:cache",
-        "php artisan optimize"
-    ],
-    "post-update-cmd": [
-        "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-        "php artisan route:clear",
-        "php artisan config:clear",
-        "php artisan ide-helper:generate",
-        "php artisan optimize"
-    ]
-},
-```
-
----
-
-# Provision/Deploy
-
-- Continuous Deploy
-- no downtime
-- Multi Servers / Instances
-- PHP 7.2
-- SSL & http2
-
----
-
 #Monitoring, Security & Optimization
 
 ---
@@ -638,6 +621,100 @@ SESSION_DRIVER=redis
 
 ^ Falar sobre Cloudflare, Papertrail, Bugsnag, Newrelic, backup jobs and loader.io, beanstalkd console
 ^ Explicar que os logs devem ser centralizados no mesmo serviço, já que eles vêm de várias máquinas diferentes. Dizer que é interessante logar tudo o que acontece no app para facilitar o debug. Falar sobre o monitoramento via Newrelic, logs via Papertrail e exceptions centralizadas no Bugsgnag. Testes de carga no loader.io
+
+---
+
+![](image/cf.png)
+
+---
+
+![inline](image/cf-overview.png)
+
+---
+
+```php
+/**
+ * Set the CloudFlare conneting IP and https if applied.
+ *
+ * @param  \Illuminate\Http\Request $request
+ * @param  \Closure                 $next
+ * @return mixed
+ */
+public function handle($request, Closure $next)
+{
+    if (! app()->environment('production')) {
+        return $next($request);
+    }
+
+    if ($request->server->has('HTTP_CF_CONNECTING_IP')) {
+        if ($request->isSecure()) {
+            $request->server->set('HTTPS', true);
+        }
+
+        $request->server->set('REMOTE_ADDR', $request->server->get('HTTP_CF_CONNECTING_IP'));
+
+        return $next($request);
+    }
+
+    logf('CF: Blocked request to %s from %s', [$request->fullUrl(), $request->ip()]);
+
+    return new Response('', 404);
+}
+```
+
+---
+
+![](image/cf-page-rules.png)
+
+---
+
+## Issue #x
+## How to clear this cache automatically?
+
+---
+
+```php
+/**
+ * Get the path to a versioned asset file.
+ *
+ * @param  string $asset
+ * @return string
+ */
+function versioned($asset)
+{
+    static $production, $base, $deploy, $sha;
+
+    $production = app()->environment('production');
+
+    if (is_null($base)) {
+        $base = $production ? 'https://static.bulldesk.com.br/' : '/';
+    }
+
+    if ($production === false) {
+        return $base.$asset . '?v=' . str_random(3);
+    }
+
+    if (is_null($deploy)) {
+        $deploy = public_path('build/deploy');
+    }
+
+    if (is_null($sha) && file_exists($deploy)) {
+        $sha = file_get_contents($deploy);
+    }
+
+    if (! empty($sha)) {
+        return $base.$asset . '?v='.$sha;
+    }
+
+    return $base.$asset;
+}
+
+<script src="{{ versioned('build/scripts/app.js') }}"></script> //https://static.bulldesk.com.br/build/scripts/app.js?v=fbe06e04c4f8ddd1c94c63f3a001807bace679e0
+
+```
+
+^ G.
+^ E. Eu utilizo dentro do deploy do envoyer via API com token
 
 ---
 
@@ -702,103 +779,6 @@ Avaí meu Avaí, tu já nasceste campeão
 
 ---
 
-![](image/cf.png)
-
----
-
-![inline](image/cf-overview.png)
-
----
-
-```php
-/**
- * Set the CloudFlare conneting IP and https if applied.
- *
- * @param  \Illuminate\Http\Request $request
- * @param  \Closure                 $next
- * @return mixed
- */
-public function handle($request, Closure $next)
-{
-    if (! app()->environment('production')) {
-        return $next($request);
-    }
-
-    if ($request->server->has('HTTP_CF_CONNECTING_IP')) {
-        if ($request->isSecure()) {
-            $request->server->set('HTTPS', true);
-        }
-
-        $request->server->set('REMOTE_ADDR', $request->server->get('HTTP_CF_CONNECTING_IP'));
-
-        return $next($request);
-    }
-
-    logf('CF: Blocked request to %s from %s', [$request->fullUrl(), $request->ip()]);
-
-    return new Response('', 404);
-}
-```
-
----
-
-![](image/cf-page-rules.png)
-
----
-
-## How to clear this cache automatically?
-
----
-
-```php
-/**
- * Get the path to a versioned asset file.
- *
- * @param  string $asset
- * @return string
- */
-function versioned($asset)
-{
-    static $production, $base, $deploy, $sha;
-
-    $production = app()->environment('production');
-
-    if (is_null($base)) {
-        $base = $production ? 'https://static.bulldesk.com.br/' : '/';
-    }
-
-    if ($production === false) {
-        return $base.$asset . '?v=' . str_random(3);
-    }
-
-    if (is_null($deploy)) {
-        $deploy = public_path('build/deploy');
-    }
-
-    if (is_null($sha) && file_exists($deploy)) {
-        $sha = file_get_contents($deploy);
-    }
-
-    if (! empty($sha)) {
-        return $base.$asset . '?v='.$sha;
-    }
-
-    return $base.$asset;
-}
-
-// Use:
-<script src="{{ versioned('build/scripts/app.js') }}"></script>
-
-// Generate:
-<script src="https://static.bulldesk.com.br/build/scripts/app.js?v=fbe06e04c4f8ddd1c94c63f3a001807bace679e0"></script>
-
-```
-
-^ G.
-^ E. Eu utilizo dentro do deploy do envoyer via API com token
-
----
-
 ![inline](image/lets-monitor.png)
 
 ^ E.
@@ -811,6 +791,7 @@ function versioned($asset)
 
 ---
 
+## Issue #x
 ## How to centralize logs and exceptions?
 
 ^ G.
@@ -875,13 +856,13 @@ public function boot()
 
 ![](image/bugsnag-errors.png)
 
----
+<!-- --- -->
 
-![original](image/white.png)
+<!-- ![original](image/white.png) -->
 
-![inline](image/bugsnag-notification.png)
+<!-- ![inline](image/bugsnag-notification.png) -->
 
-^ G.
+<!-- ^ G. -->
 
 ---
 
@@ -962,7 +943,7 @@ public function handle()
 
 ---
 
-# 1. Don't optimize or escalate prematurely, but be prepared for this.
+# 1. Don't optimize or escale prematurely, but be prepared for this.
 
 ^ E.
 
