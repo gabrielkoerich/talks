@@ -42,7 +42,7 @@ Evaldo Felipe
 
 ^ Aplicação multi tenant, com uns 600 usuários acessando por mes
 
-^ Lançamos o bulldesk em março deste ano e temos uma média de 4.000.000 de requests por mês.
+^ Lançamos o bulldesk em março do ano passado e temos uma média de 4M de requests por mês.
 
 ---
 
