@@ -62,7 +62,7 @@ Evaldo Felipe
 
 ^ Aplicação voltada para o meio juridico, para gestão de processos, organização de tarefas do time, gestão do escritório, atualização automatizada dos processos em atividade (explicar alguns detalhes)
 
-^ Versão free e versão premium com xxx usuários, com 2.400.000 de requests/semana
+^ Versão free e versão com xxx usuários, com 9.000.000 de requests/semana
 
 ---
 
@@ -207,53 +207,6 @@ Evaldo Felipe
 
 ---
 
-# Laravel Valet
-
-```bash
-# Install PHP/Composer/MySQL/Redis local
-
-# On MacOS
-$ composer global require laravel/valet
-
-# On Linux
-$ composer global require cpriego/valet-linux
-
-$ valet install
-
-$ cd ~/Projects && valet park
-
-# All directories in ~/Projects will be acessible at http://{folder}.dev
-```
-
-^ E.
-
----
-
-# Vessel (Docker)
-
-##PHP 7.2, MySQL 5.7, Redis & NodeJS with NPM, Yarn & Gulp
-
-```bash
-# Install docker
-
-$ composer require shipping-docker/vessel
-
-# Register Vessel\VesselServiceProvide if not on Laravel 5.5
-
-$ php artisan vendor:publish --provider="Vessel\VesselServiceProvider"
-
-$ bash vessel init
-
-$ ./vessel start
-
-# Acessible at http://localhost
-```
-
-^ G.
-^ Esse cara que fez o Vessel é o fideloper...
-
----
-
 # Continuous Integration
 
 ^ G.
@@ -285,17 +238,70 @@ $ ./vessel start
 
 ---
 
-# Provision/Deploy Platforms
+# Provision/Deploy
 
 ---
 
-# Provision/Deploy Platforms
+# Environment Local
 
-- Continuous Deploy
-- no downtime
-- Multi Servers / Instances
-- PHP 7.2
-- SSL & http2
+---
+
+# Laravel Valet
+
+```bash
+# Install PHP/Composer/MySQL/Redis local
+
+# On MacOS
+$ composer global require laravel/valet
+
+# On Linux
+$ composer global require cpriego/valet-linux
+
+$ valet install
+
+$ cd ~/Projects && valet park
+
+# All directories in ~/Projects will be acessible at http://{folder}.dev
+```
+
+^ E.
+^ Falar da evolução do ambiente local
+
+---
+
+# Vessel (Docker)
+
+##PHP 7.2, MySQL 5.7, Redis & NodeJS with NPM, Yarn & Gulp
+
+```bash
+# Install docker
+
+$ composer require shipping-docker/vessel
+
+# Register Vessel\VesselServiceProvide if not on Laravel 5.5
+
+$ php artisan vendor:publish --provider="Vessel\VesselServiceProvider"
+
+$ bash vessel init
+
+$ ./vessel start
+
+# Acessible at http://localhost
+```
+
+^ G.
+^ Esse cara que fez o Vessel é o fideloper...
+
+---
+
+# Production/QA Environment
+
+---
+
+# Forge
+
+- Infrastructure automation as a Service
+- PHP environment as a Service
 
 ^ E.
 ^ Falar sobre Forge, Envoyer, Let's Encrypt
@@ -307,7 +313,17 @@ $ ./vessel start
 
 ---
 
+![](image/forge-features.png)
+
+---
+
 ![](image/forge-new-server.png)
+
+---
+
+# Recipes
+
+![inline](image/forge-provision-hooks.png)
 
 ---
 
@@ -426,12 +442,6 @@ location /socket.io {
     send_timeout                300;
 }
 ```
-
----
-
-# Recipes
-
-![inline](image/forge-provision-hooks.png)
 
 ---
 
@@ -564,7 +574,17 @@ SESSION_DRIVER=redis
 
 ---
 
-#Monitoring & Security
+# Provision/Deploy
+
+- Continuous Deploy
+- no downtime
+- Multi Servers / Instances
+- PHP 7.2
+- SSL & http2
+
+---
+
+#Monitoring, Security & Optimization
 
 ---
 
