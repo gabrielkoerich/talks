@@ -148,8 +148,7 @@ Evaldo Felipe
 
 # PHP?!
 
-Composer / Packagist / Autoloader
-Dotenv
+Autoloaders, Composer & Packagist
 PHP FIG and PSRs
 
 **Standards**
@@ -174,7 +173,6 @@ public function __construct(AutomationRepository $automations)
 }
 
 /**
- * @Middleware("acl:automation.index,sending.index")
  * @Get("automation", as="automation.index")
  */
 public function index(Request $request): Response
