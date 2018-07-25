@@ -178,7 +178,7 @@ public function index(Request $request): Response
 
 - Routes & Controllers
 - Service Container & Dependency Injection
-- Migrations & Eloquent ORM
+- Migrations & ORM
 - Artisan command line
 - Queues (beanstalkd, redis, amazon sqs)
 - Broadcasting (Pusher or socket.io)
