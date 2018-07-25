@@ -7,7 +7,6 @@ build-lists: true
 ^ Ambientes semelhantes de 2 empresas diferentes
 ^ Maneiras diferentes de resolver o mesmo Problema
 
-
 ---
 
 # Who?!
@@ -28,9 +27,9 @@ Founder of Bulldesk, responsible for finance and technology
 
 ^ O Bulldesk é um software de automação de marketing e CRM, nele é possível criar formulários, landing pages, automações de marketing, e-mail marketing e ter uma visão geral de todas as negociações com seus clientes.
 
-^ Aplicação multi tenant, com uns 600 usuários acessando por mes
+^ Aplicação multi tenant, com uns 1k users por mes
 
-^ Lançamos o bulldesk em março do ano passado e temos uma média de 4M de requests por mês.
+^ Lançamos o bulldesk em março do ano passado e temos uma média de 5M de requests por mês.
 
 ---
 
@@ -857,13 +856,13 @@ public function handle()
 
 ---
 
-# Before
+# Then
 
 ![inline](image/topology-old.png)
 
 ---
 
-# Than
+# Now
 
 ![inline](image/topology.png)
 
@@ -917,7 +916,7 @@ public function handle()
 
 ---
 
-# We are hiring!
+# We're hiring!
 
 <br>
 # Questions?
