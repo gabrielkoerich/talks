@@ -22,18 +22,6 @@ Founder of Bulldesk, responsible for finance and technology
 
 ---
 
-# Who?!
-
-Evaldo Felipe
-8 years of SysAdmin
-2,5 years of DevOps
-
-[contato@evaldofelipe.com](mailto:contato@evaldofelipe.com)
-[twitter.com/evaldofelipe](https://twitter.com/evaldofelipe)
-
-
----
-
 ![](image/bulldesk.com.br.png)
 
 ^ G.
@@ -46,13 +34,15 @@ Evaldo Felipe
 
 ---
 
-![](image/bulldesk-dashboard.png)
+# Who?!
 
----
+Evaldo Felipe
+Blackops @ Neoway
+8 years of SysAdmin
+2,5 years of DevOps
 
-![original](image/white.png)
-
-![inline](image/bulldesk-github.png)
+[contato@evaldofelipe.com](mailto:contato@evaldofelipe.com)
+[twitter.com/evaldofelipe](https://twitter.com/evaldofelipe)
 
 ---
 
@@ -66,15 +56,6 @@ Evaldo Felipe
 
 ---
 
-![](image/advbox-dashboard.png)
-
----
-
-![original](image/white.png)
-
-![inline](image/advbox-github.png)
-
----
 # Agenda
 
 - PHP Sucks?!
@@ -82,7 +63,6 @@ Evaldo Felipe
 - Infrastructure
 - Tools
 - Issues and Fixes
-
 
 ^ E.
 <!--
@@ -216,6 +196,7 @@ public function index(Request $request): Response
 
 # Development Workflow & Source Management
 
+- People
 - Workflow
 - Rules, code patterns, PSRs
 - Local environment
@@ -280,11 +261,12 @@ $ valet install
 
 $ cd ~/Projects && valet park
 
-# All directories in ~/Projects will be acessible at http://{folder}.dev
+# All directories in ~/Projects will be acessible at http://{folder}.test
 ```
 
 ^ E.
 ^ Falar da evolução do ambiente local
+^ engineX
 
 ---
 
@@ -321,37 +303,13 @@ $ ./vessel start
 
 # Continuous Integration
 
-- Config (.env, dotfiles)
-- Automated Testing
+- Tests
 - Code coverage
 - Code quality
 
 ^ G.
 ^ Falar sobre Travis CI, Clode Climate, Scrutinizer
 ^ Explicar sobre testes automatizados, cobertura de testes, qualidade de código, integração contínua e mostrar as ferramentas que podem ser utilizadas para ver qualidade, coverage e rodar os testes.
-
----
-
-# .env
-
-```
-REDIS_HOST=
-BEANSTALKD_HOST=
-
-DB_HOST=
-DB_WRITE_HOST=
-DB_READ_HOST=
-DB_BACKUP_HOST=
-
-DB_NAME=
-DB_USER=
-DB_PASSWORD=
-
-CACHE_DRIVER=redis
-SESSION_DRIVER=redis
-```
-
-^ E.
 
 ---
 
@@ -377,9 +335,9 @@ SESSION_DRIVER=redis
 
 # Provision/Deploy
 
+- Multi Servers / Instances
 - Continuous Deploy
 - Zero downtime
-- Multi Servers / Instances
 - Database Replication
 - PHP 7.2
 - SSL & http2
@@ -427,6 +385,10 @@ ACCEPT     tcp  --  10.132.103.204       anywhere             tcp dpt:11300
 ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:11300
 ```
 
+^ E 
+Portas liberadas 80, 22 e 443
+22 pode ser trocada
+
 ---
 
 ![](image/forge-load-balancer.png)
@@ -434,6 +396,18 @@ ACCEPT     udp  --  10.132.103.204       anywhere             udp dpt:11300
 ---
 
 ![](image/forge-balanced-servers.png)
+
+---
+
+# Beanstalkd queues + Supervisor
+
+![inline](image/forge-workers.png)
+
+^ G.
+
+---
+
+![](image/beanstalkd-console.png)
 
 ---
 
@@ -475,34 +449,12 @@ return [
 
 ## Issue #2
 
-## How to serve static files from a single server?
+## How to serve some files from a single server?
 
 ---
-
-# Nginx Static Proxy
-
-```bash
-upstream static {
-    least_conn;
-    server 10.xx.xx.xx:80; #static server ip
-}
-```
-
-```bash
-#...
-location ~* \.(css|js|png|jpg|woff|ttf)$ {
-    proxy_pass http://static;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection upgrade;
-    proxy_set_header Host $host;
-}
-```
 
 ^ G.
 ^ Falar sobre Websocket node e redis
-
----
 
 # Nginx Websocket Proxy
 
@@ -528,7 +480,7 @@ location /socket.io {
 ```
 ---
 
-# MySQL Replication
+# Database Replication
 
 ---
 
@@ -562,18 +514,6 @@ location /socket.io {
 
 ---
 
-# Beanstalkd queues + Supervisor
-
-![inline](image/forge-workers.png)
-
-^ G.
-
----
-
-![](image/beanstalkd-console.png)
-
----
-
 ![](image/envoyer.png)
 
 ---
@@ -587,6 +527,27 @@ location /socket.io {
 ---
 
 ![inline](image/envoyer-hooks.png)
+
+---
+
+# .env
+
+```
+REDIS_HOST=
+BEANSTALKD_HOST=
+
+DB_HOST=
+DB_WRITE_HOST=
+DB_READ_HOST=
+DB_BACKUP_HOST=
+
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+
+CACHE_DRIVER=redis
+SESSION_DRIVER=redis
+```
 
 ---
 
@@ -638,6 +599,8 @@ location /socket.io {
 ![inline](image/cf-overview.png)
 
 ---
+
+^ mesma issue do load balancer
 
 ```php
 /**
@@ -725,6 +688,10 @@ function versioned($asset)
 
 ---
 
+# Monitoring
+
+---
+
 ![](image/newrelic.png)
 
 ^ G.
@@ -738,51 +705,6 @@ function versioned($asset)
 ---
 
 ![inline](image/datadog-notification.png)
-
----
-
-# Digital Ocean Monitoring
-
-```bash
-$ curl -sSL https://agent.digitalocean.com/install.sh | sh
-```
-
-^ G.
-^ Como as coisas não são tão belas assim no mundo real, o Newrelic acabou alterando a plataforma deles e cancelando o plano free antigo. O meu dura até por agora em novembro, mas felizmente, para salvar a vida de todos os pobres (brasileiros) desse mundo, o Digital Ocean lançou o seu monitoring, que é muito simples de ser instalado.
-
-^ mostrar o script install
-
----
-
-# Digital Ocean Monitoring
-
-```bash
-$ curl -sSL https://agent.digitalocean.com/install.sh | sh
-```
-<br>
-Na ilha formosa, cheia de graça, o time da raça
-É povo é gente, é bola pra frente
-É só coração, o meu Avaí
-Avaí meu Avaí, da ilha és o Leão
-Avaí meu Avaí, tu já nasceste campeão
-
----
-
-# Digital Ocean Monitoring
-
-![inline](image/do-monitoring-1.png)
-
----
-
-# Digital Ocean Monitoring
-
-![inline](image/do-monitoring-2.png)
-
----
-
-# Digital Ocean Monitoring
-
-![inline](image/do-monitoring-alert.png)
 
 ---
 
@@ -809,7 +731,7 @@ Avaí meu Avaí, tu já nasceste campeão
 
 ---
 
-![](image/forge-recipe.png)
+![](image/papertrail-logs.png)
 
 ---
 
@@ -843,7 +765,7 @@ public function boot()
 
 ---
 
-![](image/papertrail-logs.png)
+![](image/forge-recipe.png)
 
 ^ G.
 
@@ -863,11 +785,12 @@ public function boot()
 
 ![](image/bugsnag-errors.png)
 
+---
 <!-- --- -->
 
 <!-- ![original](image/white.png) -->
 
-<!-- ![inline](image/bugsnag-notification.png) -->
+![inline](image/bugsnag-notification.png)
 
 <!-- ^ G. -->
 
