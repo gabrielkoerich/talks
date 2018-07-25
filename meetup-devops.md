@@ -166,7 +166,7 @@ public function index(Request $request): Response
         ->orderBy('name')
         ->paginate(50);
 
-    return view('pages.automation.index')->with(compact('automations'));
+    return new Response(view('pages.automation.index')->with(compact('automations')), 200);
 }
 ```
 
