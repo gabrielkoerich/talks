@@ -51,7 +51,7 @@ Blackops @ Neoway
 
 ^ Aplicação voltada para o meio juridico, para gestão de processos, organização de tarefas do time, gestão do escritório, atualização automatizada dos processos em atividade (explicar alguns detalhes)
 
-^ Versão free e versão com xxx usuários, com 9.000.000 de requests/semana
+^ Versão free e versão com 9,4k escritorio 15,6k usuários, 5kk atualizacoes/dia com 9.000.000 de requests/mes
 
 ---
 
@@ -289,7 +289,7 @@ $ ./vessel start
 # Acessible at http://localhost
 ```
 
-^ G.
+^ E.
 ^ Esse cara que fez o Vessel é o fideloper...
 
 ---
@@ -327,6 +327,7 @@ $ ./vessel start
 # Production/QA Environment
 
 
+^ E.
 ^ Falar sobre Forge, Envoyer, Let's Encrypt
 ^ Mostrar como funciona o provisionamento de máquinas para produção no Forge (sem xdebug, com opcache) e a integração com deploy contínuo com zero downtime no Envoyer, citando que é possível criar vários servidores em rede, cada um fazendo o seu papel para escalar a aplicação.
 
@@ -340,6 +341,8 @@ $ ./vessel start
 - Database Replication
 - PHP 7.2
 - SSL & http2
+
+^ E.
 
 ---
 
@@ -410,7 +413,7 @@ Portas liberadas 80, 22 e 443
 
 ---
 
-## Issue #1
+## Issue
 
 ## Laravel doesn't understand that the request came from a client and not from the load balancer
 
@@ -446,7 +449,7 @@ return [
 
 ---
 
-## Issue #2
+## Issue
 
 ## How to serve some files from a single server?
 
@@ -481,6 +484,8 @@ location /socket.io {
 
 # Database Replication
 
+^ E. 
+
 ---
 
 # Master/Slave Config
@@ -514,6 +519,8 @@ location /socket.io {
 ---
 
 ![](image/envoyer.png)
+
+^ E.
 
 ---
 
@@ -599,6 +606,7 @@ SESSION_DRIVER=redis
 
 ---
 
+^ E.
 ^ mesma issue do load balancer
 
 ```php
@@ -637,8 +645,10 @@ public function handle($request, Closure $next)
 
 ---
 
-## Issue #x
+## Issue
 ## How to clear this cache automatically?
+
+^ G.
 
 ---
 
@@ -719,7 +729,7 @@ function versioned($asset)
 
 ---
 
-## Issue #x
+## Issue
 ## How to centralize logs and exceptions?
 
 ^ G.
@@ -878,7 +888,7 @@ public function handle()
 
 ---
 
-# 2. Don't create unnecessary abstractions.
+# 2. Time is money.
 
 ^ G.
 
